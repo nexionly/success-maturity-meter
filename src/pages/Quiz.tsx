@@ -106,7 +106,11 @@ const Quiz = () => {
 
             <RadioGroup value={selectedOption} onValueChange={handleOptionSelect} className="space-y-4">
               {question.options.map((option) => (
-                <div key={option.letter} className="flex items-start space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary-light transition-colors cursor-pointer">
+                <div 
+                  key={option.letter} 
+                  className="flex items-start space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary-light transition-colors cursor-pointer"
+                  onClick={() => handleOptionSelect(option.letter)}
+                >
                   <RadioGroupItem 
                     value={option.letter} 
                     id={option.letter}
