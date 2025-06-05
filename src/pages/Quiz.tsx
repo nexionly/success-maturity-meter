@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { BauhausShapes } from '@/components/BauhausShapes';
 import { quizQuestions } from '@/data/quizQuestions';
 import { QuizResponse } from '@/types/quiz';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Home } from 'lucide-react';
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -131,15 +131,25 @@ const Quiz = () => {
 
         {/* Navigation */}
         <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentQuestion === 0}
-            className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary"
-          >
-            <ArrowLeft size={16} />
-            <span>Previous</span>
-          </Button>
+          <div className="flex space-x-3">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/')}
+              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary"
+            >
+              <Home size={16} />
+              <span>Home</span>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentQuestion === 0}
+              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary"
+            >
+              <ArrowLeft size={16} />
+              <span>Previous</span>
+            </Button>
+          </div>
 
           <Button
             onClick={handleNext}

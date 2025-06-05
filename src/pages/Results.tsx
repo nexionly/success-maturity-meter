@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { BauhausShapes } from '@/components/BauhausShapes';
-import { BarChart3, RefreshCw } from 'lucide-react';
+import { BarChart3, RefreshCw, Home } from 'lucide-react';
 import { QuizResponse, QuizResults } from '@/types/quiz';
 import { calculateResults } from '@/utils/quizUtils';
 
@@ -173,14 +173,24 @@ const Results = () => {
           <p className="text-gray-600">
             Want to assess another team or take the quiz again?
           </p>
-          <Button
-            onClick={handleRetakeQuiz}
-            variant="outline"
-            className="flex items-center space-x-2 border-2 border-primary text-primary hover:bg-primary hover:text-white"
-          >
-            <RefreshCw size={16} />
-            <span>Retake Quiz</span>
-          </Button>
+          <div className="flex justify-center space-x-4">
+            <Button
+              onClick={() => navigate('/')}
+              variant="outline"
+              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary"
+            >
+              <Home size={16} />
+              <span>Return to Home</span>
+            </Button>
+            <Button
+              onClick={handleRetakeQuiz}
+              variant="outline"
+              className="flex items-center space-x-2 border-2 border-primary text-primary hover:bg-primary hover:text-white"
+            >
+              <RefreshCw size={16} />
+              <span>Retake Quiz</span>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
