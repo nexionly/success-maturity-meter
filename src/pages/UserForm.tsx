@@ -94,9 +94,10 @@ const UserForm = () => {
       const success = await sendToWebhook(payload);
 
       if (success) {
-        // Clear quiz data from localStorage
+        // Pass results to the results page and then clear localStorage
+        navigate('/results', { state: { results } });
+        // Clear quiz data from localStorage after navigation
         localStorage.removeItem('quizResponses');
-        navigate('/results');
       } else {
         throw new Error('Failed to submit results');
       }

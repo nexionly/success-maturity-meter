@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -10,16 +10,26 @@ import { calculateResults } from '@/utils/quizUtils';
 
 const Results = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [results, setResults] = useState<QuizResults | null>(null);
 
   useEffect(() => {
-    const savedResponses = localStorage.getItem('quizResponses');
-    if (savedResponses) {
-      const responses: QuizResponse[] = JSON.parse(savedResponses);
-      const calculatedResults = calculateResults(responses);
-      setResults(calculatedResults);
+    // First try to get results from navigation state
+    if (location.state?.results) {
+      setResults(location.state.results);
+    } else {
+      // Fallback to localStorage if no state (direct navigation)
+      const savedResponses = localStorage.getItem('quizResponses');
+      if (savedResponses) {
+        const responses: QuizResponse[] = JSON.parse(savedResponses);
+        const calculatedResults = calculateResults(responses);
+        setResults(calculatedResults);
+      } else {
+        // No data available, redirect to quiz
+        navigate('/quiz');
+      }
     }
-  }, []);
+  }, [location.state, navigate]);
 
   const handleRetakeQuiz = () => {
     // Clear any existing data
