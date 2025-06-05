@@ -25,8 +25,13 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#3182CE',
+					light: '#63B3ED',
+					foreground: '#FFFFFF'
+				},
+				bauhaus: {
+					yellow: '#ECC94B',
+					red: '#E53E3E'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
