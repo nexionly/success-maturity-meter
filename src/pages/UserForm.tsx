@@ -136,7 +136,7 @@ const UserForm = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="fullName" className="text-sm font-medium">
-                    Full Name *
+                    First Name *
                   </Label>
                   <Input
                     id="fullName"
@@ -144,7 +144,7 @@ const UserForm = () => {
                     value={userInfo.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
                     className="border-2 border-gray-200 focus:border-primary"
-                    placeholder="Enter your full name"
+                    placeholder="Enter your first name"
                     required
                   />
                 </div>
