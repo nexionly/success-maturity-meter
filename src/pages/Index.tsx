@@ -14,9 +14,6 @@ const Index = () => {
           <div className="flex justify-between items-center">
             <div className="text-2xl font-bold text-primary">CSBenchmark</div>
             <div className="hidden md:flex space-x-6">
-              <a href="#about" className="text-gray-600 hover:text-primary font-medium">About</a>
-              <a href="#services" className="text-gray-600 hover:text-primary font-medium">Services</a>
-              <a href="#contact" className="text-gray-600 hover:text-primary font-medium">Contact</a>
             </div>
           </div>
         </div>
@@ -37,7 +34,7 @@ const Index = () => {
             </h1>
             
             <p className="text-xl lg:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Take our comprehensive 5-minute assessment designed for B2B SaaS companies with 10-150 employees. 
+              Take our comprehensive 2-minute assessment designed for B2B SaaS companies with 10-150 employees. 
               Discover where you stand and get actionable recommendations to improve your customer success processes.
             </p>
 
@@ -48,7 +45,7 @@ const Index = () => {
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
-              <p className="text-sm text-gray-500 mt-4">✓ 5-minute assessment ✓ Instant results via email ✓ No credit card required</p>
+              <p className="text-sm text-gray-500 mt-4">✓ 2-minute assessment ✓ Instant results via email ✓ No credit card required</p>
             </div>
           </div>
         </div>
@@ -139,7 +136,7 @@ const Index = () => {
                     <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
                     <div>
                       <h3 className="text-xl font-semibold text-gray-900 mb-2">Receive Recommendations</h3>
-                      <p className="text-gray-600">Get personalized action items, tools, and resources tailored to your current maturity level and improvement areas.</p>
+                      <p className="text-gray-600">Get personalized action items tailored to your current maturity level and improvement areas.</p>
                     </div>
                   </div>
                 </div>
@@ -183,7 +180,7 @@ const Index = () => {
               Ready to Benchmark Your Customer Success?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              Join hundreds of B2B SaaS leaders who have used our assessment to improve their customer success processes.
+              Get actionable insights to improve your customer success processes.
             </p>
             <Link to="/quiz">
               <Button className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
@@ -204,9 +201,6 @@ const Index = () => {
               Helping B2B SaaS companies optimize their customer success processes
             </p>
             <div className="flex justify-center space-x-6">
-              <a href="#about" className="text-gray-400 hover:text-white">About</a>
-              <a href="#services" className="text-gray-400 hover:text-white">Services</a>
-              <a href="#contact" className="text-gray-400 hover:text-white">Contact</a>
             </div>
           </div>
         </div>
