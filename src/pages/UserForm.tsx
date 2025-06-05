@@ -23,8 +23,23 @@ const UserForm = () => {
     role: ''
   });
 
+  // Simple math captcha
+  const [captcha, setCaptcha] = useState(() => {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    return { num1, num2, answer: num1 + num2 };
+  });
+  const [captchaInput, setCaptchaInput] = useState('');
+
   const handleInputChange = (field: keyof UserInfo, value: string) => {
     setUserInfo(prev => ({ ...prev, [field]: value }));
+  };
+
+  const regenerateCaptcha = () => {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    setCaptcha({ num1, num2, answer: num1 + num2 });
+    setCaptchaInput('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,6 +50,17 @@ const UserForm = () => {
         title: "Please fill in all required fields",
         variant: "destructive"
       });
+      return;
+    }
+
+    // Validate captcha
+    if (parseInt(captchaInput) !== captcha.answer) {
+      toast({
+        title: "Incorrect captcha",
+        description: "Please solve the math problem correctly",
+        variant: "destructive"
+      });
+      regenerateCaptcha();
       return;
     }
 
@@ -211,6 +237,32 @@ const UserForm = () => {
                     className="border-2 border-gray-200 focus:border-primary"
                     placeholder="e.g., Founder, VP Customer Success"
                   />
+                </div>
+              </div>
+
+              {/* Captcha */}
+              <div className="space-y-2">
+                <Label htmlFor="captcha" className="text-sm font-medium">
+                  Security Check: What is {captcha.num1} + {captcha.num2}? *
+                </Label>
+                <div className="flex space-x-2">
+                  <Input
+                    id="captcha"
+                    type="number"
+                    value={captchaInput}
+                    onChange={(e) => setCaptchaInput(e.target.value)}
+                    className="border-2 border-gray-200 focus:border-primary flex-1"
+                    placeholder="Enter the answer"
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={regenerateCaptcha}
+                    className="px-3 border-2 border-gray-300 hover:border-primary"
+                  >
+                    New Problem
+                  </Button>
                 </div>
               </div>
 
