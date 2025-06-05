@@ -1,18 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { BauhausShapes } from '@/components/BauhausShapes';
-import { CheckCircle, Mail, RefreshCw } from 'lucide-react';
+import { BarChart3, RefreshCw } from 'lucide-react';
+import { QuizResponse, QuizResults } from '@/types/quiz';
+import { calculateResults } from '@/utils/quizUtils';
 
 const Results = () => {
   const navigate = useNavigate();
+  const [results, setResults] = useState<QuizResults | null>(null);
+
+  useEffect(() => {
+    const savedResponses = localStorage.getItem('quizResponses');
+    if (savedResponses) {
+      const responses: QuizResponse[] = JSON.parse(savedResponses);
+      const calculatedResults = calculateResults(responses);
+      setResults(calculatedResults);
+    }
+  }, []);
 
   const handleRetakeQuiz = () => {
     // Clear any existing data
     localStorage.removeItem('quizResponses');
     navigate('/quiz');
   };
+
+  const getMaturityColor = (level: string) => {
+    switch (level.replace(' Stage', '')) {
+      case 'Foundational': return 'bg-red-500';
+      case 'Developing': return 'bg-yellow-500';
+      case 'Established': return 'bg-blue-500';
+      case 'Advanced': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getCategoryData = () => {
+    if (!results) return [];
+    
+    return [
+      { 
+        name: 'Onboarding Process', 
+        score: results.categoryScores.onboarding, 
+        maxScore: 10,
+        percentage: (results.categoryScores.onboarding / 10) * 100
+      },
+      { 
+        name: 'Customer Outcomes', 
+        score: results.categoryScores.customerOutcomes, 
+        maxScore: 15,
+        percentage: (results.categoryScores.customerOutcomes / 15) * 100
+      },
+      { 
+        name: 'QBRs', 
+        score: results.categoryScores.qbrs, 
+        maxScore: 10,
+        percentage: (results.categoryScores.qbrs / 10) * 100
+      },
+      { 
+        name: 'AI Utilization', 
+        score: results.categoryScores.aiUtilization, 
+        maxScore: 10,
+        percentage: (results.categoryScores.aiUtilization / 10) * 100
+      },
+      { 
+        name: 'Overall Strategy', 
+        score: results.categoryScores.overallStrategy, 
+        maxScore: 5,
+        percentage: (results.categoryScores.overallStrategy / 5) * 100
+      }
+    ];
+  };
+
+  if (!results) {
+    return (
+      <div className="min-h-screen bg-white relative flex items-center justify-center">
+        <BauhausShapes variant="hero" />
+        <div className="relative z-10">
+          <p className="text-xl text-gray-600">Loading your results...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white relative">
@@ -21,78 +92,69 @@ const Results = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <div className="text-center mb-8">
           <div className="mb-6">
-            <CheckCircle className="w-20 h-20 text-primary mx-auto mb-4" />
+            <BarChart3 className="w-20 h-20 text-primary mx-auto mb-4" />
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Thank You!
+              Your Results
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Your Customer Success benchmarking assessment has been successfully submitted.
+              Here's your Customer Success maturity assessment breakdown
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        {/* Overall Score and Maturity Level */}
+        <div className="mb-8">
+          <Card className="shadow-lg border-2 border-gray-100">
+            <CardHeader className={`${getMaturityColor(results.maturityLevel)} text-white text-center`}>
+              <CardTitle className="text-2xl">
+                {results.maturityLevel}
+              </CardTitle>
+              <p className="text-lg opacity-90">
+                {results.totalScore} out of 50 points
+              </p>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="mb-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-700">Overall Progress</span>
+                  <span className="text-sm text-gray-500">{results.totalScore}/50</span>
+                </div>
+                <Progress value={(results.totalScore / 50) * 100} className="h-3" />
+              </div>
+              <p className="text-gray-600 text-center">
+                {results.maturityLevel === 'Foundational Stage' && 'Your customer success function is in its early stages with significant opportunity for development.'}
+                {results.maturityLevel === 'Developing Stage' && 'You have established some customer success practices but lack consistency and depth.'}
+                {results.maturityLevel === 'Established Stage' && 'You have a solid customer success foundation with good practices in place.'}
+                {results.maturityLevel === 'Advanced Stage' && 'You have a sophisticated customer success operation with data-driven processes.'}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="mb-8">
           <Card className="shadow-lg border-2 border-gray-100">
             <CardHeader className="bg-gradient-to-r from-primary to-primary-light text-white text-center">
               <CardTitle className="flex items-center justify-center space-x-2">
-                <Mail className="w-6 h-6" />
-                <span>What's Next?</span>
+                <BarChart3 className="w-6 h-6" />
+                <span>Category Breakdown</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
-                  <p className="text-gray-700">
-                    You'll receive your detailed benchmarking results via email within 24 hours.
-                  </p>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
-                  <p className="text-gray-700">
-                    Your report will include your maturity level, category breakdowns, and personalized recommendations.
-                  </p>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
-                  <p className="text-gray-700">
-                    We'll also send you relevant resources and tools to help improve your customer success processes.
-                  </p>
-                </div>
+              <div className="space-y-6">
+                {getCategoryData().map((category, index) => (
+                  <div key={index}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium text-gray-700">{category.name}</span>
+                      <span className="text-sm text-gray-500">{category.score}/{category.maxScore}</span>
+                    </div>
+                    <Progress value={category.percentage} className="h-3" />
+                    <div className="text-xs text-gray-500 mt-1">
+                      {category.percentage.toFixed(0)}% complete
+                    </div>
+                  </div>
+                ))}
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-lg border-2 border-gray-100">
-            <CardHeader className="bg-gradient-to-r from-bauhaus-yellow to-bauhaus-red text-white text-center">
-              <CardTitle>Maturity Levels Overview</CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 bg-red-200 rounded"></div>
-                  <span className="font-semibold text-sm">Foundational Stage</span>
-                  <span className="text-gray-600 text-sm">(10-20 points)</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 bg-yellow-200 rounded"></div>
-                  <span className="font-semibold text-sm">Developing Stage</span>
-                  <span className="text-gray-600 text-sm">(21-30 points)</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 bg-blue-200 rounded"></div>
-                  <span className="font-semibold text-sm">Established Stage</span>
-                  <span className="text-gray-600 text-sm">(31-40 points)</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 bg-green-200 rounded"></div>
-                  <span className="font-semibold text-sm">Advanced Stage</span>
-                  <span className="text-gray-600 text-sm">(41-50 points)</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 mt-4">
-                Your detailed breakdown will show exactly where you stand and how to improve.
-              </p>
             </CardContent>
           </Card>
         </div>
@@ -109,17 +171,6 @@ const Results = () => {
             <RefreshCw size={16} />
             <span>Retake Quiz</span>
           </Button>
-        </div>
-
-        <div className="mt-12 text-center">
-          <div className="inline-block bg-gray-50 p-6 rounded-lg border">
-            <p className="text-sm text-gray-600 mb-2">
-              <strong>Questions or need immediate assistance?</strong>
-            </p>
-            <p className="text-sm text-gray-600">
-              Contact us at <a href="mailto:support@yourcompany.com" className="text-primary hover:underline">support@yourcompany.com</a>
-            </p>
-          </div>
         </div>
       </div>
     </div>
