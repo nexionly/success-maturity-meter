@@ -15,6 +15,13 @@ export interface QuizResponse {
   points: number;
 }
 
+export interface WebhookQuizResponse {
+  questionId: number;
+  questionText: string;
+  selectedOption: string;
+  pointValue: number;
+}
+
 export interface UserInfo {
   fullName: string;
   email: string;
@@ -36,8 +43,22 @@ export interface QuizResults {
 }
 
 export interface WebhookPayload {
-  userInfo: UserInfo;
-  responses: QuizResponse[];
-  results: QuizResults;
+  user: {
+    name: string;
+    email: string;
+    company: string;
+    companySize: string;
+    role: string;
+  };
+  responses: WebhookQuizResponse[];
+  scores: {
+    total: number;
+    onboarding: number;
+    outcomes: number;
+    qbrs: number;
+    ai: number;
+    strategy: number;
+  };
+  maturityLevel: string;
   timestamp: string;
 }

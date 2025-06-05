@@ -56,11 +56,37 @@ const UserForm = () => {
       const responses: QuizResponse[] = JSON.parse(savedResponses);
       const results = calculateResults(responses);
 
-      // Prepare webhook payload
+      // Import quiz questions to get question text
+      const { quizQuestions } = await import('@/data/quizQuestions');
+
+      // Prepare webhook payload in the required format
       const payload = {
-        userInfo,
-        responses,
-        results,
+        user: {
+          name: userInfo.fullName,
+          email: userInfo.email,
+          company: userInfo.companyName,
+          companySize: userInfo.companySize,
+          role: userInfo.role || ''
+        },
+        responses: responses.map(response => {
+          const question = quizQuestions.find(q => q.id === response.questionId);
+          const option = question?.options.find(opt => opt.letter === response.selectedOption);
+          return {
+            questionId: response.questionId,
+            questionText: question?.question || '',
+            selectedOption: option?.text || response.selectedOption,
+            pointValue: response.points
+          };
+        }),
+        scores: {
+          total: results.totalScore,
+          onboarding: results.categoryScores.onboarding,
+          outcomes: results.categoryScores.customerOutcomes,
+          qbrs: results.categoryScores.qbrs,
+          ai: results.categoryScores.aiUtilization,
+          strategy: results.categoryScores.overallStrategy
+        },
+        maturityLevel: results.maturityLevel.replace(' Stage', ''),
         timestamp: new Date().toISOString()
       };
 
