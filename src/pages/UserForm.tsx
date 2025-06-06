@@ -143,23 +143,23 @@ const UserForm = () => {
     <div className="min-h-screen bg-white relative">
       <BauhausShapes variant="accent" />
       
-      <div className="container mx-auto px-4 py-8 max-w-2xl relative z-10">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <div className="container mx-auto px-4 py-4 md:py-8 max-w-2xl relative z-10">
+        <div className="text-center mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4 px-2">
             Almost Done!
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base md:text-lg text-gray-600 px-4">
             Enter your information to receive your personalized benchmarking results
           </p>
         </div>
 
         <Card className="shadow-lg border-2 border-gray-100">
-          <CardHeader className="text-center bg-gradient-to-r from-primary to-primary-light text-white">
-            <CardTitle className="text-xl">Your Information</CardTitle>
+          <CardHeader className="text-center bg-gradient-to-r from-primary to-primary-light text-white p-4 md:p-6">
+            <CardTitle className="text-lg md:text-xl">Your Information</CardTitle>
           </CardHeader>
-          <CardContent className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="p-4 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="fullName" className="text-sm font-medium">
                     First Name *
@@ -169,7 +169,7 @@ const UserForm = () => {
                     type="text"
                     value={userInfo.fullName}
                     onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    className="border-2 border-gray-200 focus:border-primary"
+                    className="border-2 border-gray-200 focus:border-primary min-h-[44px]"
                     placeholder="Enter your first name"
                     required
                   />
@@ -184,7 +184,7 @@ const UserForm = () => {
                     type="email"
                     value={userInfo.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="border-2 border-gray-200 focus:border-primary"
+                    className="border-2 border-gray-200 focus:border-primary min-h-[44px]"
                     placeholder="Enter your email"
                     required
                   />
@@ -200,19 +200,19 @@ const UserForm = () => {
                   type="text"
                   value={userInfo.companyName}
                   onChange={(e) => handleInputChange('companyName', e.target.value)}
-                  className="border-2 border-gray-200 focus:border-primary"
+                  className="border-2 border-gray-200 focus:border-primary min-h-[44px]"
                   placeholder="Enter your company name"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="companySize" className="text-sm font-medium">
                     Company Size *
                   </Label>
                   <Select value={userInfo.companySize} onValueChange={(value) => handleInputChange('companySize', value)}>
-                    <SelectTrigger className="border-2 border-gray-200 focus:border-primary">
+                    <SelectTrigger className="border-2 border-gray-200 focus:border-primary min-h-[44px]">
                       <SelectValue placeholder="Select company size" />
                     </SelectTrigger>
                     <SelectContent>
@@ -234,7 +234,7 @@ const UserForm = () => {
                     type="text"
                     value={userInfo.role}
                     onChange={(e) => handleInputChange('role', e.target.value)}
-                    className="border-2 border-gray-200 focus:border-primary"
+                    className="border-2 border-gray-200 focus:border-primary min-h-[44px]"
                     placeholder="e.g., Founder, VP Customer Success"
                   />
                 </div>
@@ -245,13 +245,13 @@ const UserForm = () => {
                 <Label htmlFor="captcha" className="text-sm font-medium">
                   Security Check: What is {captcha.num1} + {captcha.num2}? *
                 </Label>
-                <div className="flex space-x-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Input
                     id="captcha"
                     type="number"
                     value={captchaInput}
                     onChange={(e) => setCaptchaInput(e.target.value)}
-                    className="border-2 border-gray-200 focus:border-primary flex-1"
+                    className="border-2 border-gray-200 focus:border-primary flex-1 min-h-[44px]"
                     placeholder="Enter the answer"
                     required
                   />
@@ -259,15 +259,16 @@ const UserForm = () => {
                     type="button"
                     variant="outline"
                     onClick={regenerateCaptcha}
-                    className="px-3 border-2 border-gray-300 hover:border-primary"
+                    className="border-2 border-gray-300 hover:border-primary min-h-[44px] sm:px-3 sm:w-auto w-full"
                   >
-                    New Problem
+                    <span className="sm:hidden">Generate New Problem</span>
+                    <span className="hidden sm:inline">New Problem</span>
                   </Button>
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <p className="text-sm text-gray-600">
+              <div className="bg-gray-50 p-3 md:p-4 rounded-lg border">
+                <p className="text-xs md:text-sm text-gray-600">
                   <strong>Privacy Notice:</strong> Your information will be used to send you personalized 
                   benchmarking results and relevant customer success resources. We respect your privacy 
                   and will not share your data with third parties.
@@ -277,7 +278,7 @@ const UserForm = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold py-3 text-lg"
+                className="w-full bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold py-3 text-base md:text-lg min-h-[48px]"
               >
                 {isSubmitting ? 'Submitting...' : 'Get My Results'}
               </Button>

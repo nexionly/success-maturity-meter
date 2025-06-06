@@ -75,16 +75,16 @@ const Quiz = () => {
   const question = quizQuestions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-white relative flex flex-col">
       <BauhausShapes variant="floating" />
       
-      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
+      <div className="container mx-auto px-4 py-4 md:py-8 max-w-4xl relative z-10 flex-1 flex flex-col">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-4 md:mb-8">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4 px-2">
             Customer Success Benchmarking Quiz
           </h1>
-          <div className="mb-6">
+          <div className="mb-4 md:mb-6">
             <Progress value={progress} className="w-full h-3" />
             <p className="text-sm text-gray-600 mt-2">
               Question {currentQuestion + 1} of {quizQuestions.length}
@@ -93,22 +93,22 @@ const Quiz = () => {
         </div>
 
         {/* Question Card */}
-        <Card className="mb-8 shadow-lg border-2 border-gray-100">
-          <CardContent className="p-8">
-            <div className="mb-6">
-              <span className="inline-block px-3 py-1 bg-primary text-white text-sm font-medium rounded-full mb-4">
+        <Card className="mb-4 md:mb-8 shadow-lg border-2 border-gray-100 flex-1">
+          <CardContent className="p-4 md:p-8">
+            <div className="mb-4 md:mb-6">
+              <span className="inline-block px-3 py-1 bg-primary text-white text-sm font-medium rounded-full mb-3 md:mb-4">
                 {question.category}
               </span>
-              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 leading-relaxed">
+              <h2 className="text-lg md:text-2xl font-semibold text-gray-900 leading-relaxed">
                 {question.question}
               </h2>
             </div>
 
-            <RadioGroup value={selectedOption} onValueChange={handleOptionSelect} className="space-y-4">
+            <RadioGroup value={selectedOption} onValueChange={handleOptionSelect} className="space-y-3 md:space-y-4">
               {question.options.map((option) => (
                 <div 
                   key={option.letter} 
-                  className="flex items-start space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary-light transition-colors cursor-pointer"
+                  className="flex items-start space-x-3 p-3 md:p-4 rounded-lg border-2 border-gray-200 hover:border-primary-light transition-colors cursor-pointer min-h-[44px]"
                   onClick={() => handleOptionSelect(option.letter)}
                 >
                   <RadioGroupItem 
@@ -118,7 +118,7 @@ const Quiz = () => {
                   />
                   <Label 
                     htmlFor={option.letter} 
-                    className="flex-1 cursor-pointer font-medium text-gray-800 leading-relaxed"
+                    className="flex-1 cursor-pointer font-medium text-gray-800 leading-relaxed text-sm md:text-base"
                   >
                     <span className="font-bold text-primary mr-2">{option.letter}.</span>
                     {option.text}
@@ -130,31 +130,31 @@ const Quiz = () => {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center">
-          <div className="flex space-x-3">
+        <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mt-auto pt-4 pb-safe">
+          <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3">
             <Button
               variant="outline"
               onClick={() => navigate('/')}
-              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary"
+              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] px-4"
             >
               <Home size={16} />
-              <span>Home</span>
+              <span className="hidden sm:inline">Home</span>
             </Button>
             <Button
               variant="outline"
               onClick={handlePrevious}
               disabled={currentQuestion === 0}
-              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary"
+              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] px-4"
             >
               <ArrowLeft size={16} />
-              <span>Previous</span>
+              <span className="hidden sm:inline">Previous</span>
             </Button>
           </div>
 
           <Button
             onClick={handleNext}
             disabled={!selectedOption}
-            className="flex items-center space-x-2 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold px-8 py-3"
+            className="flex items-center space-x-2 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold px-6 sm:px-8 py-3 min-h-[44px] w-full sm:w-auto"
           >
             <span>{currentQuestion === quizQuestions.length - 1 ? 'Complete Quiz' : 'Next'}</span>
             <ArrowRight size={16} />
