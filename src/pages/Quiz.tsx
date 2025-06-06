@@ -130,31 +130,31 @@ const Quiz = () => {
         </Card>
 
         {/* Navigation */}
-        <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mt-auto pt-4 pb-safe">
-          <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/')}
-              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] px-4"
-            >
-              <Home size={16} />
-              <span className="hidden sm:inline">Home</span>
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentQuestion === 0}
-              className="flex items-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] px-4"
-            >
-              <ArrowLeft size={16} />
-              <span className="hidden sm:inline">Previous</span>
-            </Button>
-          </div>
+        <div className="flex items-center gap-2 mt-auto pt-4 pb-safe">
+          <Button
+            variant="outline"
+            onClick={handlePrevious}
+            disabled={currentQuestion === 0}
+            className="flex items-center justify-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] flex-1"
+          >
+            <ArrowLeft size={16} />
+            <span className="hidden sm:inline">Back</span>
+          </Button>
+          
+          <Button
+            variant="outline"
+            onClick={() => navigate('/')}
+            className="flex items-center justify-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] flex-1"
+          >
+            <Home size={16} />
+            <span className="hidden sm:inline">Home</span>
+          </Button>
 
           <Button
             onClick={handleNext}
             disabled={!selectedOption}
-            className="flex items-center space-x-2 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold px-6 sm:px-8 py-3 min-h-[44px] w-full sm:w-auto"
+            className="flex items-center justify-center space-x-2 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold min-h-[44px] flex-1"
+            style={{ flexBasis: '33%', flexGrow: 0, flexShrink: 0 }}
           >
             <span>{currentQuestion === quizQuestions.length - 1 ? 'Complete Quiz' : 'Next'}</span>
             <ArrowRight size={16} />
