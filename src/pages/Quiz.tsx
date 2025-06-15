@@ -65,6 +65,10 @@ const Quiz = () => {
     }
   };
 
+  const handleQuestionJump = (questionIndex: number) => {
+    setCurrentQuestion(questionIndex);
+  };
+
   const handlePrevious = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(prev => prev - 1);
@@ -86,9 +90,32 @@ const Quiz = () => {
           </h1>
           <div className="mb-4 md:mb-6">
             <Progress value={progress} className="w-full h-3" />
-            <p className="text-sm text-gray-600 mt-2">
-              Question {currentQuestion + 1} of {quizQuestions.length}
-            </p>
+            <div className="flex justify-between items-center mt-2">
+              <p className="text-sm text-gray-600">
+                Question {currentQuestion + 1} of {quizQuestions.length}
+              </p>
+              <p className="text-xs text-green-600 font-medium">
+                {responses.length} answered • Auto-saved
+              </p>
+            </div>
+            
+            {/* Quick navigation dots */}
+            <div className="flex justify-center space-x-1 mt-3">
+              {quizQuestions.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleQuestionJump(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentQuestion
+                      ? 'bg-primary'
+                      : responses.find(r => r.questionId === quizQuestions[index].id)
+                      ? 'bg-green-400'
+                      : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to question ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -130,35 +157,44 @@ const Quiz = () => {
         </Card>
 
         {/* Navigation */}
-        <div className="flex items-center gap-2 mt-auto pt-4 pb-safe">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentQuestion === 0}
-            className="flex items-center justify-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] flex-1"
-          >
-            <ArrowLeft size={16} />
-            <span className="hidden sm:inline">Back</span>
-          </Button>
-          
-          <Button
-            variant="outline"
-            onClick={() => navigate('/')}
-            className="flex items-center justify-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[44px] flex-1"
-          >
-            <Home size={16} />
-            <span className="hidden sm:inline">Home</span>
-          </Button>
+        <div className="mt-auto pt-4 pb-safe space-y-3">
+          {/* Touch-friendly navigation for mobile */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={currentQuestion === 0}
+              className="flex items-center justify-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[48px] flex-1"
+            >
+              <ArrowLeft size={16} />
+              <span className="hidden sm:inline">Back</span>
+            </Button>
+            
+            <Button
+              variant="outline"
+              onClick={() => navigate('/')}
+              className="flex items-center justify-center space-x-2 border-2 border-gray-300 hover:border-primary min-h-[48px] flex-1"
+            >
+              <Home size={16} />
+              <span className="hidden sm:inline">Home</span>
+            </Button>
 
-          <Button
-            onClick={handleNext}
-            disabled={!selectedOption}
-            className="flex items-center justify-center space-x-2 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold min-h-[44px] flex-1"
-            style={{ flexBasis: '33%', flexGrow: 0, flexShrink: 0 }}
-          >
-            <span>{currentQuestion === quizQuestions.length - 1 ? 'Complete Quiz' : 'Next'}</span>
-            <ArrowRight size={16} />
-          </Button>
+            <Button
+              onClick={handleNext}
+              disabled={!selectedOption}
+              className="flex items-center justify-center space-x-2 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white font-semibold min-h-[48px] flex-1"
+            >
+              <span>{currentQuestion === quizQuestions.length - 1 ? 'Complete Quiz' : 'Next'}</span>
+              <ArrowRight size={16} />
+            </Button>
+          </div>
+          
+          {/* Progress summary */}
+          <div className="text-center text-xs text-gray-500 px-4">
+            {responses.length > 0 && (
+              <span>Progress saved • {Math.round((responses.length / quizQuestions.length) * 100)}% complete</span>
+            )}
+          </div>
         </div>
       </div>
     </div>
